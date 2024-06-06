@@ -13,15 +13,16 @@ const createTables = async () => {
       );
     `);
 
-    // await client.query(`
-    //   CREATE TABLE IF NOT EXISTS products (
-    //     id SERIAL PRIMARY KEY,
-    //     name VARCHAR(100) NOT NULL,
-    //     description TEXT,
-    //     price NUMERIC NOT NULL,
-    //     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    //   );
-    // `);
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS products (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        description TEXT,
+        min_bid_price NUMERIC NOT NULL,
+        last_date_bid TIMESTAMP NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
 
     console.log("Tables created successfully");
   } catch (err) {

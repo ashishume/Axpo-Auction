@@ -1,101 +1,48 @@
 const express = require("express");
 const router = express.Router();
-const Product = require("../models/Products");
-// const Cart = require("../models/Cart");
 const authenticateToken = require("../controllers/authMiddleware");
+const pool = require("../controllers/db-connect");
 
 // Create and save a new product
 router.post("/product", async (req, res) => {
-  // try {
-  //   const { name, category, brand, quantity, price, image, description } = req.body;
-  //   const newProduct = new Product({ name, category, brand, quantity, price, image, description });
-  //   await newProduct.save();
-  //   res.status(201).json({ message: "product added", product: req.body });
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
+  //TODO: create a common method to make these generic
+  const { name, description, minBidPrice, lastDateBid, createdAt } = req.body;
+  try {
+    const results = await pool.query(
+      `INSERT INTO products (name, description, min_bid_price, last_date_bid, created_at)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`,
+      [name, description, minBidPrice, lastDateBid, createdAt]
+    );
+    res
+      .status(201)
+      .json({ id: results.rows[0].id, message: "Product added successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
-/** insert multple products */
-router.post("/products", async (req, res) => {
-  // try {
-  //   const validatedProducts = [];
-  //   for (const product of req.body) {
-  //     const productModel = new Product(product);
-  //     const validationResult = productModel.validateSync();
-  //     if (validationResult) {
-  //       console.error(`Invalid product: ${validationResult.message}`);
-  //       res.status(500).json({ message: error.message });
-  //     } else {
-  //       validatedProducts.push(product);
-  //     }
-  //   }
+router.get("/products", async (req, res) => {
+  try {
+    const results = await pool.query("SELECT * FROM products");
+    if (results.rowCount) {
+      let newResults = [];
+      results.rows.forEach((row) => {
+        newResults.push({
+          ...row,
+          isBiddingDateExpired: row.last_date_bid < row.created_at,  // is bidding date already gone
+        });
+      });
 
-  //   if (validatedProducts.length > 0) {
-  //     const insertedProducts = await Product.insertMany(validatedProducts);
-  //     res.status(201).json({ message: "products added" });
-  //   } else {
-  //     res.status(500).json({ message: "No valid products to insert" });
-  //     console.error("No valid products to insert");
-  //   }
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
-});
-
-/** fetch multple products */
-router.get("/products", authenticateToken, async (req, res) => {
-  // try {
-  //   const products = await Product.find().select("-__v");
-  //   res.status(200).json(products);
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
-});
-/** fetch category products */
-router.get("/products/:categoryId", authenticateToken, async (req, res) => {
-  // try {
-  //   const { categoryId } = req.params;
-  //   const products = await Product.find({
-  //     category: categoryId,
-  //   })
-  //     .populate({
-  //       path: "category",
-  //     })
-  //     .select("-__v");
-  //   res.status(200).json(products);
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
-});
-/** fetch one products */
-router.get("/product/:id", authenticateToken, async (req, res) => {
-  // try {
-  //   const { id } = req.params;
-  //   const product = await Product.findById(id)
-  //     .populate({
-  //       path: "category",
-  //     })
-  //     .select("-__v");
-  //   res.status(200).json(product);
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
-});
-
-/** check if product is already to cart or not */
-router.get("/product/added-to-cart/:userId/:productId", authenticateToken, async (req, res) => {
-  // try {
-  //   const { userId, productId } = req.params;
-  //   const cartData = await Cart.findOne({ user: userId, product: productId });
-  //   if (cartData) {
-  //     res.status(200).json(true);
-  //   } else {
-  //     res.status(200).json(false);
-  //   }
-  // } catch (error) {
-  //   res.status(500).json({ message: error.message });
-  // }
+      return res.status(200).json(newResults);
+    } else {
+      res.status(404).json({ message: "No products found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 module.exports = router;
