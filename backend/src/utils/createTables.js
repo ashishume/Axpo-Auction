@@ -18,6 +18,7 @@ const createTables = async () => {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         description TEXT,
+        product_image TEXT,
         min_bid_price NUMERIC NOT NULL,
         last_date_bid TIMESTAMP NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

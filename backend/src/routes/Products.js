@@ -6,13 +6,20 @@ const pool = require("../controllers/db-connect");
 // Create and save a new product
 router.post("/product", async (req, res) => {
   //TODO: create a common method to make these generic
-  const { name, description, minBidPrice, lastDateBid, createdAt } = req.body;
+  const {
+    name,
+    description,
+    minBidPrice,
+    productImage,
+    lastDateBid,
+    createdAt,
+  } = req.body;
   try {
     const results = await pool.query(
-      `INSERT INTO products (name, description, min_bid_price, last_date_bid, created_at)
-      VALUES ($1, $2, $3, $4, $5)
+      `INSERT INTO products (name, description, min_bid_price, product_image,last_date_bid, created_at)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *`,
-      [name, description, minBidPrice, lastDateBid, createdAt]
+      [name, description, minBidPrice, productImage, lastDateBid, createdAt]
     );
     res
       .status(201)

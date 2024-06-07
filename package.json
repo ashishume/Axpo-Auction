@@ -1,10 +1,10 @@
 {
   "name": "axpo-auction-app",
   "version": "1.0.0",
-  "description": "This is a full stack project with a Node.js and Express backend and a Vite and React frontend.",
+  "description": "This is a full stack project with a Node.js and Express backend and a Vite and NextJs frontend.",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd backend && npm run dev\""
+    "start": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\""
   },
   "author": "",
   "license": "ISC",
