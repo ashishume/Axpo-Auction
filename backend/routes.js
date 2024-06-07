@@ -3,7 +3,7 @@ const app = express();
 
 const userRoutes = require("./src/routes/Auth");
 const productRoutes = require("./src/routes/Products");
-const bidProducts = require("./src/routes/BidProduct");
+const bidProducts = require("./src/routes/BidProducts");
 
 [userRoutes, productRoutes, bidProducts].forEach((apiRoutes) =>
   app.use("/api/v1", apiRoutes)

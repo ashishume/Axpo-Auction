@@ -52,13 +52,50 @@ router.post("/check-bid-status", async (req, res) => {
   }
 });
 
-
 router.get("/bids", async (req, res) => {
   try {
     const results = await pool.query(`SELECT * FROM auctions`);
 
     return res.status(200).json({
       data: results.rows || [],
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+router.get("/bids/:productId", async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const results = await pool.query(
+      `SELECT amount FROM auctions WHERE product_id=$1`,
+      [productId]
+    );
+
+    
+    const highestBidderQuery = await pool.query(
+      `
+      SELECT 
+        a.amount,
+        a.entered_at,
+        u.name,
+        u.email
+      FROM auctions a
+      JOIN users u ON a.user_id = u.id
+      WHERE a.product_id = $1
+      ORDER BY a.amount DESC
+      LIMIT 1
+    `,
+      [productId]
+    );
+
+    const highestBidderDetails = highestBidderQuery?.rowCount
+      ? highestBidderQuery?.rows[0]
+      : {};
+    return res.status(200).json({
+      data: results.rows || [],
+      highestBidderDetails: highestBidderDetails,
     });
   } catch (error) {
     console.error(error);
