@@ -31,13 +31,13 @@ router.get("/products", async (req, res) => {
       results.rows.forEach((row) => {
         newResults.push({
           ...row,
-          isBiddingDateExpired: row.last_date_bid < row.created_at,  // is bidding date already gone
+          isBiddingDateExpired: row.last_date_bid < row.created_at, // is bidding date already gone
         });
       });
 
-      return res.status(200).json(newResults);
+      return res.status(200).json({ data: newResults });
     } else {
-      res.status(404).json({ message: "No products found" });
+      res.status(404).json({ data: [], message: "No products found" });
     }
   } catch (error) {
     console.error(error);

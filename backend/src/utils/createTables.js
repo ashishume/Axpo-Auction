@@ -24,6 +24,18 @@ const createTables = async () => {
       );
     `);
 
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS auctions (
+        id SERIAL PRIMARY KEY,
+        user_id INT NOT NULL,
+        product_id INT NOT NULL,
+        amount NUMERIC NOT NULL,
+        entered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+      );
+    `);
+
     console.log("Tables created successfully");
   } catch (err) {
     console.error("Error creating tables", err.stack);
