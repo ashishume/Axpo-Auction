@@ -18,7 +18,7 @@ export default function Login() {
 
     const res = await loginApiCall(formData);
     if (res) {
-      router.push("/");
+      router.push("/dashboard");
     }
   };
 
