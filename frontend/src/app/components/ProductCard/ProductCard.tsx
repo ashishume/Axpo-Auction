@@ -9,7 +9,6 @@ const ProductCard = ({ product }: { product: IProduct }) => {
   const router = useRouter();
 
   const clickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(event);
     router.push(`/product/${product.id}`);
   };
   return (

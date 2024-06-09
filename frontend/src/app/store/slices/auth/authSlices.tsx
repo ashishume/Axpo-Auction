@@ -14,7 +14,6 @@ const authSlices = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-
     //validate user
     builder.addCase(validateAuth.pending, (state: IAuthState, _) => {
       state.isLoggedIn = false;
@@ -25,9 +24,12 @@ const authSlices = createSlice({
         state.isLoggedIn = action.payload?.isLoggedIn;
       }
     );
-    builder.addCase(validateAuth.rejected, (state: IAuthState, _) => {
-      state.isLoggedIn = false;
-    });
+    builder.addCase(
+      validateAuth.rejected,
+      (state: IAuthState, action: PayloadAction<any>) => {
+        state.isLoggedIn = false;
+      }
+    );
 
     //logout reducer
     builder.addCase(

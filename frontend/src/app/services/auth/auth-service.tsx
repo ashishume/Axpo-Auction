@@ -32,25 +32,20 @@ export const signupApiCall = async (credentials: {
   }
 };
 
-export const validateAuth = createAsyncThunk(
-  "auth/validate",
-  async () => {
-    try {
-      const result = await Axios.get("/validate");
-      return result?.data;
-    } catch (e: any) {
-      console.error(e.message);
-    }
+export const validateAuth = createAsyncThunk("auth/validate", async () => {
+  try {
+    const result = await Axios.get("/validate");
+    return result?.data;
+  } catch (e: any) {
+    console.error(e);
+    return { isLoggedIn: false };
   }
-);
-export const logoutUser = createAsyncThunk(
-  "auth/logout",
-  async () => {
-    try {
-      const result = await Axios.post("/logout");
-      return result?.data;
-    } catch (e: any) {
-      console.error(e.message);
-    }
+});
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  try {
+    const result = await Axios.post("/logout");
+    return result?.data;
+  } catch (e: any) {
+    console.error(e.message);
   }
-);
+});

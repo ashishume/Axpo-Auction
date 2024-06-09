@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../store/hooks";
 import Loader from "../components/Loader";
 import { AppState } from "../store/store";
-import Navbar from "../components/Navbar";
 
 const Dashboard = () => {
   const { isLoading, data } = useSelector((state: AppState) => state.products);
@@ -21,7 +20,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <Navbar />
       <div className="auction-container">
         {isLoading ? (
           <Loader />

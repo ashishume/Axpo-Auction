@@ -14,7 +14,7 @@ export default function Signup() {
     confirmPassword: "",
   });
   const [error, setError] = useState("");
-  const route = useRouter();
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ export default function Signup() {
     }
     const res = await signupApiCall(formData);
     if (res?.data) {
-      route.push("/dashboard");
+      router.push("/");
     }
   };
 
