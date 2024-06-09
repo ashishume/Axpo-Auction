@@ -6,5 +6,5 @@ export interface IProduct {
   last_date_bid: string;
   product_image: string;
   created_at: string;
-  isBiddingDateExpired: boolean;
+  is_bidding_date_expired: boolean;
 }
