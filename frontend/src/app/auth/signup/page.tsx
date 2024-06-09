@@ -13,22 +13,18 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
   });
-
   const [error, setError] = useState("");
-
   const route = useRouter();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-
     setLoading(true);
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
     const res = await signupApiCall(formData);
-
     if (res?.data) {
       route.push("/dashboard");
     }

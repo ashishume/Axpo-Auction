@@ -45,6 +45,19 @@ router.post("/login", async (req, res) => {
 
     if (user.rowCount === 1) {
       // User authenticated successfully
+
+      const token = jwt.sign(
+        { userId: user.rows[0].id },
+        process.env.SECRET_KEY,
+        {
+          expiresIn: "3h",
+        }
+      );
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
       return res
         .status(200)
         .json({ message: "Login successful", user: user.rows[0] });
@@ -66,6 +79,34 @@ router.get("/users", async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+router.get("/validate", async (req, res) => {
+  try {
+    const token = req.cookies.jwt;
+    if (token) {
+      const authTokenExp = jwt.verify(token, process.env.SECRET_KEY);
+      res.status(200).json({
+        isLoggedIn: true,
+        authTokenExp,
+      });
+    } else {
+      res.status(401).json({ isLoggedIn: false });
+    }
+  } catch (error) {
+    res.status(401).json({ message: "Invalid or expired token", isLoggedIn: false });
+  }
+});
+
+
+router.post("/logout", async (req, res) => {
+  try {
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 });
 

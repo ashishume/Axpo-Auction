@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { loginApiCall } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -10,11 +11,11 @@ export default function Login() {
     password: "",
   });
   const router = useRouter();
+  const isLoggedIn = useAppSelector((state) => state.auth.isLoggedIn);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     const res = await loginApiCall(formData);
     if (res) {
       router.push("/dashboard");
@@ -28,6 +29,14 @@ export default function Login() {
       [name]: value,
     }));
   }
+
+
+
+  useEffect(() => {
+    if (isLoggedIn === true) {
+      router.push("/dashboard");
+    }
+  });
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">

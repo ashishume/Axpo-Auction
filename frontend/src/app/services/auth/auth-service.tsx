@@ -1,3 +1,4 @@
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const BASE_URL = "http://localhost:7000/api/v1/";
@@ -30,3 +31,26 @@ export const signupApiCall = async (credentials: {
     console.error(e.message);
   }
 };
+
+export const validateAuth = createAsyncThunk(
+  "auth/validate",
+  async () => {
+    try {
+      const result = await Axios.get("/validate");
+      return result?.data;
+    } catch (e: any) {
+      console.error(e.message);
+    }
+  }
+);
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async () => {
+    try {
+      const result = await Axios.post("/logout");
+      return result?.data;
+    } catch (e: any) {
+      console.error(e.message);
+    }
+  }
+);
