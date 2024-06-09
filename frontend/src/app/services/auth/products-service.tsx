@@ -31,3 +31,14 @@ export const getProductsDataById = createAsyncThunk(
     }
   }
 );
+export const fetchChartData = async (productId: string) => {
+  try {
+    const res = await Axios.get(`bids/${productId}`);
+    if (!res.data) {
+      throw new Error("Failed to fetch data");
+    }
+    return res?.data?.data;
+  } catch (e) {
+    console.error(e);
+  }
+};
