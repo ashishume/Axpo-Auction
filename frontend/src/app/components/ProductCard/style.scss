@@ -1,9 +1,10 @@
-$primary-color: #007bff;
+$primary-color: #8400ff;
 $secondary-color: #6c757d;
 $background-color: #f8f9fa;
 $hover-color: #0056b3;
 
 .auction-container {
+  cursor: pointer;
   display: flex;
   flex-wrap: wrap;
   // justify-content: space-around;
@@ -26,7 +27,7 @@ $hover-color: #0056b3;
 
     .card-header {
       background: $primary-color;
-      color: white;
+      color: #fff;
       padding: 20px;
       font-size: 1.5rem;
     }

@@ -52,4 +52,21 @@ router.get("/products", async (req, res) => {
   }
 });
 
+router.get("/product/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const results = await pool.query("SELECT * FROM products WHERE id=$1", [
+      id,
+    ]);
+    if (results.rowCount) {
+      return res.status(200).json({ data: results.rows[0] });
+    } else {
+      res.status(404).json({ data: [], message: "No products found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 module.exports = router;

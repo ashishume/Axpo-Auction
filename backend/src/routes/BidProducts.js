@@ -38,7 +38,6 @@ router.post("/check-bid-status", async (req, res) => {
     const results = await pool.query(
       `
         SELECT * FROM auctions WHERE  user_id=$1 AND product_id=$2
-         
       `,
       [userId, productId]
     );
@@ -73,7 +72,6 @@ router.get("/bids/:productId", async (req, res) => {
       [productId]
     );
 
-    
     const highestBidderQuery = await pool.query(
       `
       SELECT 

@@ -1,14 +1,19 @@
-// "use client";
+"use client";
 import React, { useRef, useState } from "react";
 import { IProduct } from "../../shared/models/Products";
 import "./style.scss";
-import CustomTooltip from "../Tooltip/Tooltip";
 import Tooltip from "../Tooltip/Tooltip";
-
+import { useRouter } from "next/navigation";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
+  const router = useRouter();
+
+  const clickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log(event);
+    router.push("/dashboard");
+  };
   return (
-    <div key={product.id} className="card">
+    <div key={product.id} className="card" onClick={clickHandler}>
       <div className="card-header">{product.name}</div>
       <div className="card-body">
         <img
