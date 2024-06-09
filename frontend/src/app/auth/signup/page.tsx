@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import Head from "next/head";
+import { signupApiCall } from "@/app/services/auth/auth-service";
+import { useRouter } from "next/navigation";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,8 @@ export default function Signup() {
 
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const route = useRouter();
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
@@ -23,7 +26,12 @@ export default function Signup() {
       setError("Passwords do not match");
       return;
     }
-    console.log(formData);
+
+    const res = await signupApiCall(formData);
+
+    if (res?.data) {
+      route.push("/dashboard");
+    }
   };
 
   function formChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {

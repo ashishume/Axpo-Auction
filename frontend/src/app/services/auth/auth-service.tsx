@@ -18,3 +18,15 @@ export const loginApiCall = async (credentials: {
     console.error(e.message);
   }
 };
+export const signupApiCall = async (credentials: {
+  email: string;
+  password: string;
+  name: string;
+}) => {
+  try {
+    const result = await Axios.post("/signup", credentials);
+    return result;
+  } catch (e: any) {
+    console.error(e.message);
+  }
+};

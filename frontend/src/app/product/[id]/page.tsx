@@ -19,17 +19,4 @@ const ProductPage = async ({ params }: any) => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-//   const productId = params?.id;
-//   console.log(productId);
-
-// //   const product = await getProductsDataById(productId);
-
-//   return {
-//     props: {
-//     //   product,
-//     },
-//   };
-// };
-
 export default ProductPage;

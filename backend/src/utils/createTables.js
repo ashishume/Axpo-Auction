@@ -17,8 +17,8 @@ const createTables = async () => {
       CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
-        description TEXT,
-        product_image TEXT,
+        description TEXT NOT NULL,
+        product_image TEXT NOT NULL,
         min_bid_price NUMERIC NOT NULL,
         last_date_bid TIMESTAMP NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useState } from "react";
+import React from "react";
 import { IProduct } from "../../shared/models/Products";
 import "./style.scss";
 import Tooltip from "../Tooltip/Tooltip";

@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import Head from "next/head";
 import { loginApiCall } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
 
