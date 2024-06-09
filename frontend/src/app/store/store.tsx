@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import productsSlices from "./slices/productsSlices";
 
 export const makeStore = () =>
   configureStore({
-    reducer: {
+    reducer: combineReducers({
       products: productsSlices,
-    },
+    }),
     devTools: process.env.NODE_ENV !== "production",
   });
 
