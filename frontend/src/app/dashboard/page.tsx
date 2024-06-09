@@ -1,14 +1,32 @@
-import ProductCard from "../components/ProductCard/ProductCard";
-import { getProductsData } from "../services/auth/products-service";
-import { IProduct } from "../shared/models/Products";
+"use client";
 
-const Dashboard = async () => {
-  const products = await getProductsData();
+import { useSelector } from "react-redux";
+import ProductCard from "../components/ProductCard/ProductCard";
+import { getProducts } from "../services/auth/products-service";
+import { IProduct } from "../shared/models/Products";
+import { useEffect } from "react";
+import { useAppDispatch } from "../store/hooks";
+import Loader from "../components/Loader";
+import { AppState } from "../store/store";
+
+const Dashboard = () => {
+  const { isLoading, data } = useSelector((state: AppState) => state.products);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+
   return (
     <div className="auction-container">
-      {products?.data?.map((product: IProduct) => {
-        return <ProductCard product={product} />;
-      })}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        data?.map((product: IProduct) => {
+          return <ProductCard key={product.id} product={product} />;
+        })
+      )}
     </div>
   );
 };
