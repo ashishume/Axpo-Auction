@@ -1,6 +1,6 @@
 # Axpo Auction app
 
-This is a full stack project with a Node.js and Express backend and a Vite and React frontend.
+This is a full stack project with a Node.js and Express backend and a NextJs frontend.
 
 ## Project Structure
 
