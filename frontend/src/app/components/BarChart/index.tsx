@@ -10,7 +10,7 @@ const BarChartComp = ({
   productId,
 }: {
   name: string;
-  productId: string;
+  productId: number;
 }) => {
   const [chartData, setChartData] = useState([] as any);
   const [label, setLabel] = useState([] as any);
@@ -22,7 +22,7 @@ const BarChartComp = ({
       response.map((value: { amount: string }) => {
         payload.push(Number((value as any)?.amount));
       });
-      setLabel(response.map((val: any) => `$${val?.amount}`));
+      setLabel(response.map((val: any) => `₹${val?.amount}`));
       setChartData(payload);
     })();
   }, []);
