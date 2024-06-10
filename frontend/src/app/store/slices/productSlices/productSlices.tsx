@@ -56,9 +56,6 @@ const productSlice = createSlice({
       }
     );
     // fetch bid status
-    builder.addCase(fetchBidStatus.pending, (state: IProductByIdState, _) => {
-      state.isBidAllowed = false;
-    });
     builder.addCase(
       fetchBidStatus.fulfilled,
       (
@@ -68,6 +65,9 @@ const productSlice = createSlice({
         state.isBidAllowed = action.payload.isBidAllowed;
       }
     );
+    builder.addCase(fetchBidStatus.rejected, (state: IProductByIdState, _) => {
+      state.isBidAllowed = false;
+    });
   },
 });
 export const { clearProductDetails } = productSlice.actions;
