@@ -14,7 +14,7 @@ export const loginApiCall = async (credentials: {
 }) => {
   try {
     const result = await Axios.post("/login", credentials);
-    return result;
+    return result?.data;
   } catch (e: any) {
     console.error(e.message);
   }

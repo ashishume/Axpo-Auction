@@ -10,7 +10,7 @@ import Loader from "../components/Loader";
 import { AppState } from "../store/store";
 
 const Dashboard = () => {
-  const { isLoading, data } = useSelector((state: AppState) => state.products);
+  const { isLoading, data } = useSelector((state: AppState) => state?.products);
 
   const dispatch = useAppDispatch();
 
@@ -20,13 +20,15 @@ const Dashboard = () => {
 
   return (
     <>
-      <div className="auction-container">
+      <div className="auction-container block h-auto">
         {isLoading ? (
           <Loader />
-        ) : (
+        ) : data?.length ? (
           data?.map((product: IProduct) => {
             return <ProductCard key={product.id} product={product} />;
           })
+        ) : (
+          <div className="text-center bg-red inline-block w-full text-2xl"> No products found</div>
         )}
       </div>
     </>
