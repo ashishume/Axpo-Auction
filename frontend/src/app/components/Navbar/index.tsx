@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { logoutUser } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/app/shared/routes/routes";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    router.push("/auth/login");
+    router.push(ROUTES.LOGIN);
   };
 
   return (
@@ -62,12 +63,12 @@ export default function Navbar() {
               </button>
             ) : (
               <>
-                <Link href="/auth/login" passHref>
+                <Link href={ROUTES.LOGIN} passHref>
                   <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                     Login
                   </div>
                 </Link>
-                <Link href="/auth/signup" passHref>
+                <Link href={ROUTES.SIGNUP} passHref>
                   <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                     Signup
                   </div>
@@ -160,13 +161,13 @@ export default function Navbar() {
             </button>
           ) : (
             <>
-              <Link href="/auth/login" passHref>
+              <Link href={ROUTES.LOGIN} passHref>
                 <div className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                   {/* Animation for hover effect on Login button */}
                   Login
                 </div>
               </Link>
-              <Link href="/auth/signup" passHref>
+              <Link href={ROUTES.SIGNUP} passHref>
                 <div className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                   {/* Animation for hover effect on Signup button */}
                   Signup

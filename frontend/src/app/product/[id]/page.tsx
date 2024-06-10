@@ -1,27 +1,30 @@
 "use client";
 import {
   fetchBidStatus,
+  fetchChartData,
   getProductsDataById,
   updateBidAmount,
 } from "../../services/auth/products-service";
-import { useAppDispatch } from "@/app/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useSelector } from "react-redux";
 import { AppState } from "@/app/store/store";
 import Loader from "@/app/components/Loader";
 import BarChartComp from "@/app/components/BarChart";
 import { Block } from "@mui/icons-material";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 import { clearProductDetails } from "@/app/store/slices/productSlices/productSlices";
+import { IChartDataState } from "@/app/store/slices/chart/chartSlices";
 
 const ProductPage = () => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState("");
   const [bidAmount, setBidAmount] = useState(0);
-  const { isLoading, data, isBidAllowed } = useSelector(
+  const { isLoading, data, isBidAllowed } = useAppSelector(
     (state: AppState) => state.product
   );
+  const chartData: IChartDataState = useAppSelector((state) => state.chart);
+
   const { id } = useParams();
   const local = useLocalStorage("user");
   useEffect(() => {
@@ -32,6 +35,8 @@ const ProductPage = () => {
         userId: local.value?.id,
       })
     );
+
+    dispatch(fetchChartData(Number(id)));
 
     return () => {
       dispatch(clearProductDetails());
@@ -63,7 +68,7 @@ const ProductPage = () => {
 
   return (
     <div className="flex gap-8 p-8">
-      <aside className="w-64 bg-white p-4 rounded-lg shadow-lg shadow-black-100">
+      <aside className="w-96 bg-white p-4 rounded-lg shadow-lg shadow-black-100">
         {!isLoading ? (
           <>
             <h2 className="text-xl font-bold">Product details</h2>
@@ -75,6 +80,20 @@ const ProductPage = () => {
                 {data?.last_date_bid
                   ? new Date(data?.last_date_bid).toDateString()
                   : null}
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+              <div className="bg-white rounded-lg">
+                <h2 className="text-xl font-bold mb-4">Highest Bidder</h2>
+                <p className="text-gray-700">
+                  <strong>Name:</strong>{" "}
+                  {chartData?.data?.highestBidderDetails?.name}
+                </p>
+                <p className="text-gray-700">
+                  <strong>Amount:</strong> ₹
+                  {chartData?.data?.highestBidderDetails?.amount}
+                </p>
               </div>
             </div>
           </>
@@ -142,7 +161,7 @@ const ProductPage = () => {
           </div>
         ) : null}
 
-        {data ? <BarChartComp name={data.name} productId={data?.id} /> : null}
+        {data ? <BarChartComp name={data.name} /> : null}
       </main>
     </div>
   );

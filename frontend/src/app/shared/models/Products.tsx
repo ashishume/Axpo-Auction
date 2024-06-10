@@ -8,3 +8,13 @@ export interface IProduct {
   created_at: string;
   is_bidding_date_expired: boolean;
 }
+
+export interface IChartData {
+  data: { amount: string }[];
+  highestBidderDetails: {
+    amount: string;
+    entered_at: string;
+    name: string;
+    email: string;
+  };
+}

@@ -4,12 +4,13 @@ import { IProduct } from "../../shared/models/Products";
 import "./style.scss";
 import Tooltip from "../Tooltip/Tooltip";
 import { useRouter } from "next/navigation";
+import { ROUTES } from "@/app/shared/routes/routes";
 
 const ProductCard = ({ product }: { product: IProduct }) => {
   const router = useRouter();
 
   const clickHandler = (event: React.MouseEvent<HTMLDivElement>) => {
-    router.push(`/product/${product.id}`);
+    router.push(`${ROUTES.PRODUCT}/${product.id}`);
   };
   return (
     <div key={product.id} className="card" onClick={clickHandler}>

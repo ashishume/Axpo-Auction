@@ -1,30 +1,23 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
-import { fetchChartData } from "@/app/services/auth/products-service";
+import { useAppSelector } from "@/app/store/hooks";
+import { Bar } from "react-chartjs-2";
 
-const BarChartComp = ({
-  name = "",
-  productId,
-}: {
-  name: string;
-  productId: number;
-}) => {
+const BarChartComp = ({ name = "" }: { name: string }) => {
   const [chartData, setChartData] = useState([] as any);
   const [label, setLabel] = useState([] as any);
-
+  const { data } = useAppSelector((state) => state.chart);
   useEffect(() => {
     (async () => {
-      const response = await fetchChartData(productId);
       let payload: any = [];
-      response.map((value: { amount: string }) => {
+      data?.data?.map((value: { amount: string }) => {
         payload.push(Number((value as any)?.amount));
       });
-      setLabel(response.map((val: any) => `₹${val?.amount}`));
+      setLabel(data?.data?.map((val: any) => `₹${val?.amount}`));
       setChartData(payload);
     })();
-  }, []);
+  }, [data]);
 
   const options = {
     responsive: true,
@@ -39,7 +32,7 @@ const BarChartComp = ({
     },
   };
 
-  const data = {
+  const chartDataSets = {
     labels: label,
     datasets: [
       {
@@ -52,7 +45,7 @@ const BarChartComp = ({
 
   return (
     <div className="h-72 flex justify-center">
-      <Bar options={options} data={data} />
+      <Bar options={options} data={chartDataSets} />
     </div>
   );
 };
