@@ -22,13 +22,18 @@ const Dashboard = () => {
     <>
       <div className="auction-container block h-auto">
         {isLoading ? (
-          <Loader />
+          <div className="w-full flex justify-center">
+            <Loader />
+          </div>
         ) : data?.length ? (
           data?.map((product: IProduct) => {
             return <ProductCard key={product.id} product={product} />;
           })
         ) : (
-          <div className="text-center bg-red inline-block w-full text-2xl"> No products found</div>
+          <div className="text-center bg-red inline-block w-full text-2xl">
+            {" "}
+            No products found
+          </div>
         )}
       </div>
     </>

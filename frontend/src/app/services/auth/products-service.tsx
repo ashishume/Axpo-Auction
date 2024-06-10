@@ -31,6 +31,20 @@ export const getProductsDataById = createAsyncThunk(
     }
   }
 );
+export const fetchBidStatus = createAsyncThunk(
+  "products/fetchBidStatus",
+  async (payload: { productId: number; userId: number }) => {
+    try {
+      const res = await Axios.post("check-bid-status", payload);
+      if (!res.data) {
+        throw new Error("Failed to fetch data");
+      }
+      return res?.data;
+    } catch (e) {
+      console.error(e);
+    }
+  }
+);
 export const fetchChartData = async (productId: number) => {
   try {
     const res = await Axios.get(`bids/${productId}`);

@@ -41,9 +41,8 @@ router.post("/check-bid-status", async (req, res) => {
       `,
       [userId, productId]
     );
-
     return res.status(200).json({
-      isBidAllowed: !!!results.rows,
+      isBidAllowed: !!!results.rowCount,
     });
   } catch (error) {
     console.error(error);

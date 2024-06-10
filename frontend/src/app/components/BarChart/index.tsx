@@ -1,6 +1,5 @@
 "use client";
-import { Axios } from "@/app/services/auth/auth-service";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 import { fetchChartData } from "@/app/services/auth/products-service";
@@ -51,7 +50,11 @@ const BarChartComp = ({
     ],
   };
 
-  return <Bar options={options} data={data} />;
+  return (
+    <div className="h-72 flex justify-center">
+      <Bar options={options} data={data} />
+    </div>
+  );
 };
 
 export default BarChartComp;
