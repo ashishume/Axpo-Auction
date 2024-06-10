@@ -63,6 +63,8 @@ const ProductPage = () => {
         productId: data.id,
         userId: id,
       });
+
+      await dispatch(fetchChartData(Number(id)));
     }
   };
 
@@ -71,9 +73,9 @@ const ProductPage = () => {
       <aside className="w-96 bg-white p-4 rounded-lg shadow-lg shadow-black-100">
         {!isLoading ? (
           <>
-            <h2 className="text-xl font-bold">Product details</h2>
+            <h2 className="text-xl font-bold pb-4">Product details</h2>
             <img src={data?.product_image} />
-            <p className="">{data?.description}</p>
+            <p className="py-5">{data?.description}</p>
             <div className="text-md border-t my-5 py-5">
               Last date to bid:
               <div className="text-xl font-bold">
