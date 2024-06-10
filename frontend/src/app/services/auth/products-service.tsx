@@ -46,10 +46,11 @@ export const fetchChartData = async (productId: number) => {
 export const updateBidAmount = async (payload: {
   amount: number;
   productId: number;
+  userId: number;
 }) => {
   try {
     const body = {
-      userId: "1", //fetch from localstorage
+      userId: payload.userId,
       productId: payload.productId,
       amount: payload.amount,
       enteredAt: new Date().toISOString(),

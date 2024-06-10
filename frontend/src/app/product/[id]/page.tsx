@@ -1,9 +1,5 @@
 "use client";
-import {
-  fetchChartData,
-  getProductsDataById,
-  updateBidAmount,
-} from "../../services/auth/products-service";
+import { getProductsDataById, updateBidAmount } from "../../services/auth/products-service";
 import { useAppDispatch } from "@/app/store/hooks";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -12,12 +8,16 @@ import { AppState } from "@/app/store/store";
 import Loader from "@/app/components/Loader";
 import BarChartComp from "@/app/components/BarChart";
 import { Block } from "@mui/icons-material";
+import useLocalStorage from "@/app/hooks/useLocalStorage";
+
+
 const ProductPage = () => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState("");
   const [bidAmount, setBidAmount] = useState(0);
   const { isLoading, data } = useSelector((state: AppState) => state.product);
   const { id } = useParams();
+  const local = useLocalStorage("user");
   useEffect(() => {
     dispatch(getProductsDataById(id as string));
   }, []);
@@ -36,9 +36,11 @@ const ProductPage = () => {
   };
   const placeBid = async () => {
     if (data?.id) {
+      const { id } = local.value;
       await updateBidAmount({
         amount: Number(bidAmount),
         productId: data.id,
+        userId: id,
       });
     }
   };
@@ -118,9 +120,7 @@ const ProductPage = () => {
           </div>
         </div>
 
-        {data ? (
-          <BarChartComp name={data.name} productId={data?.id} />
-        ) : null}
+        {data ? <BarChartComp name={data.name} productId={data?.id} /> : null}
       </main>
     </div>
   );

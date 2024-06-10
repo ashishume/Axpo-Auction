@@ -26,32 +26,27 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/" passHref>
               <div className="text-xl font-bold text-gray-900 transition-transform duration-300 hover:scale-110">
-                {/* Animation for hover effect on the brand name */}
                 Bidding App
               </div>
             </Link>
             <div className="hidden md:flex ml-10 space-x-4">
               <Link href="/" passHref>
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
-                  {/* Animation for hover effect on menu items */}
                   Home
                 </div>
               </Link>
               <Link href="/auctions" passHref>
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
-                  {/* Animation for hover effect on menu items */}
                   Auctions
                 </div>
               </Link>
               <Link href="/about" passHref>
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
-                  {/* Animation for hover effect on menu items */}
                   About
                 </div>
               </Link>
               <Link href="/contact" passHref>
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
-                  {/* Animation for hover effect on menu items */}
                   Contact
                 </div>
               </Link>
@@ -63,20 +58,17 @@ export default function Navbar() {
                 onClick={handleLogout}
                 className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100"
               >
-                {/* Animation for hover effect on Logout button */}
                 Logout
               </button>
             ) : (
               <>
                 <Link href="/auth/login" passHref>
                   <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
-                    {/* Animation for hover effect on Login button */}
                     Login
                   </div>
                 </Link>
                 <Link href="/auth/signup" passHref>
                   <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
-                    {/* Animation for hover effect on Signup button */}
                     Signup
                   </div>
                 </Link>

@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { loginApiCall } from "@/app/services/auth/auth-service";
-import { useRouter } from "next/navigation";
+import useLocalStorage from "@/app/hooks/useLocalStorage";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -9,14 +9,17 @@ export default function Login() {
     email: "",
     password: "",
   });
-  const router = useRouter();
-
+  const local = useLocalStorage("user");
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     const res = await loginApiCall(formData);
     if (res) {
-      router.push("/");
+      local.setStoredValue({
+        ...res.user,
+      });
+
+      window.location.href = "/";
     }
   };
 
