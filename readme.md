@@ -136,3 +136,10 @@ Contributions are welcome! Please follow these steps:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+
+Screenshots
+![image](https://github.com/ashishume/Axpo-Auction/assets/21136600/b278a3e8-bae0-47f6-bf34-bdfbe48c1ad5)
+![image](https://github.com/ashishume/Axpo-Auction/assets/21136600/16205810-b0cd-48f7-a72e-28d03bd32cff)
+![image](https://github.com/ashishume/Axpo-Auction/assets/21136600/f4efe6a9-cb4e-48d2-826a-5a09e1372d6a)
+
