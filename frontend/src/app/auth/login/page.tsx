@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { loginApiCall } from "@/app/services/auth/auth-service";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
+import Image from "next/image";
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,15 @@ export default function Login() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md animate-fadeIn">
+        <div className="text-center flex justify-center mix-blend-multiply">
+          <Image
+            src={"/logo.png"}
+            alt="Logo"
+            width={70}
+            height={70}
+            draggable="false"
+          />
+        </div>
         <h2 className="text-2xl font-bold text-center text-gray-900">Login</h2>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">

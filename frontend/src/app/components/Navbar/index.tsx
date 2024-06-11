@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { logoutUser } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/app/shared/routes/routes";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,13 @@ export default function Navbar() {
           <div className="flex items-center">
             <Link href="/" passHref>
               <div className="text-xl font-bold text-gray-900 transition-transform duration-300 hover:scale-110">
-                Bidding App
+                <Image
+                  src={"/logo.png"}
+                  alt="Logo"
+                  width={50}
+                  height={50}
+                  draggable="false"
+                />
               </div>
             </Link>
             <div className="hidden md:flex ml-10 space-x-4">
@@ -36,7 +43,7 @@ export default function Navbar() {
                   Home
                 </div>
               </Link>
-              <Link href="/auctions" passHref>
+              {/* <Link href="/auctions" passHref>
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                   Auctions
                 </div>
@@ -50,7 +57,7 @@ export default function Navbar() {
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                   Contact
                 </div>
-              </Link>
+              </Link> */}
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-4">

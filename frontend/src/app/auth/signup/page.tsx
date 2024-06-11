@@ -3,6 +3,7 @@ import { useState } from "react";
 import Head from "next/head";
 import { signupApiCall } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
@@ -46,6 +47,15 @@ export default function Signup() {
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-bold text-center text-gray-900">
+            <div className="text-center flex justify-center mix-blend-multiply">
+              <Image
+                src={"/logo.png"}
+                alt="Logo"
+                width={70}
+                height={70}
+                draggable="false"
+              />
+            </div>
             Sign Up
           </h2>
           <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
