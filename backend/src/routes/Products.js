@@ -32,7 +32,9 @@ router.post("/product", async (req, res) => {
 
 router.get("/products", async (req, res) => {
   try {
-    const results = await pool.query("SELECT * FROM products");
+    const results = await pool.query(
+      "SELECT * FROM products ORDER BY created_at DESC"
+    );
     if (results.rowCount) {
       let newResults = [];
       results.rows.forEach((row) => {

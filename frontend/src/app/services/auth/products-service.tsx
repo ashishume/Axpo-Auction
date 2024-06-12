@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { Axios } from "./auth-service";
-import { IChartData } from "@/app/shared/models/Products";
+import { IChartData, IProductPayload } from "@/app/shared/models/Products";
 
 export const getProducts = createAsyncThunk(
   "products/getProducts",
@@ -85,5 +85,18 @@ export const updateBidAmount = async (payload: {
     return res?.data?.data;
   } catch (e) {
     console.error(e);
+  }
+};
+
+export const submitNewProduct = async (payload: IProductPayload) => {
+  try {
+    const res = await Axios.post(`product`, payload);
+    if (!res.data) {
+      throw new Error("Failed to add product");
+    }
+    return res?.data;
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
 };

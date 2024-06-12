@@ -18,3 +18,12 @@ export interface IChartData {
     email: string;
   };
 }
+
+export interface IProductPayload {
+  name: string;
+  description: string;
+  minBidPrice: number;
+  productImage: string;
+  lastDateBid: string;
+  createdAt: string;
+}
