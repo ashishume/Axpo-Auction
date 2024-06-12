@@ -84,23 +84,26 @@ const ProductPage = () => {
                   : null}
               </div>
             </div>
-
-            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-              <div className="bg-white rounded-lg">
-                <h2 className="text-xl font-bold mb-4">Highest Bidder</h2>
-                <p className="text-gray-700">
-                  <strong>Name:</strong>{" "}
-                  {chartData?.data?.highestBidderDetails?.name}
-                </p>
-                <p className="text-gray-700">
-                  <strong>Amount:</strong> ₹
-                  {chartData?.data?.highestBidderDetails?.amount}
-                </p>
+            {chartData?.data?.highestBidderDetails ? (
+              <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                <div className="bg-white rounded-lg">
+                  <h2 className="text-xl font-bold mb-4">Highest Bidder</h2>
+                  <p className="text-gray-700">
+                    <strong>Name:</strong>{" "}
+                    {chartData?.data?.highestBidderDetails?.name}
+                  </p>
+                  <p className="text-gray-700">
+                    <strong>Amount:</strong> ₹
+                    {chartData?.data?.highestBidderDetails?.amount}
+                  </p>
+                </div>
               </div>
-            </div>
+            ) : null}
           </>
         ) : (
-          <Loader />
+          <div className="flex justify-center">
+            <Loader />
+          </div>
         )}
       </aside>
       <main className="flex-1 bg-white p-4 rounded-lg shadow">

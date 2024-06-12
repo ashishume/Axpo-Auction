@@ -89,7 +89,7 @@ router.get("/bids/:productId", async (req, res) => {
 
     const highestBidderDetails = highestBidderQuery?.rowCount
       ? highestBidderQuery?.rows[0]
-      : {};
+      : null;
     return res.status(200).json({
       data: results.rows || [],
       highestBidderDetails: highestBidderDetails,
