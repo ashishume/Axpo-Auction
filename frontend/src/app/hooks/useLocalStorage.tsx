@@ -1,19 +1,31 @@
 'use client'
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 
 const useLocalStorage = (key: string, initialValue: string = "") => {
-  const [value, setValue] = useState(() => {
-    const storedValue = localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : initialValue;
-  });
+  const [value, setValue] = useState<string>(initialValue);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedValue = localStorage.getItem(key);
+      setValue(storedValue ? JSON.parse(storedValue) : initialValue);
+    }
+  }, [key, initialValue]);
 
   const setStoredValue = (newValue: any) => {
     setValue(newValue);
-    localStorage.setItem(key, JSON.stringify(newValue));
+    if (typeof window !== "undefined") {
+      localStorage.setItem(key, JSON.stringify(newValue));
+    }
   };
-  const removeStoredValue = (key: string) => {
-    localStorage.removeItem(key);
+
+  const removeStoredValue = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(key);
+    }
+    setValue(initialValue);
   };
+
   return { value, setStoredValue, removeStoredValue };
 };
 

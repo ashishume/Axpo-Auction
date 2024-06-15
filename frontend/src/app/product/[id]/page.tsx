@@ -32,7 +32,7 @@ const ProductPage = () => {
     dispatch(
       fetchBidStatus({
         productId: Number(id),
-        userId: local.value?.id,
+        userId: (local.value as any)?.id,
       })
     );
 
@@ -57,7 +57,7 @@ const ProductPage = () => {
   };
   const placeBid = async () => {
     if (data?.id) {
-      const { id } = local.value;
+      const { id } = local.value as any;
       await updateBidAmount({
         amount: Number(bidAmount),
         productId: data.id,
