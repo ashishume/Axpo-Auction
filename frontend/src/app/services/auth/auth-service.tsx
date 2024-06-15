@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const BASE_URL =
-  "https://backend-kz0sg49ks-ashish-debnaths-projects.vercel.app/api/v1/";
+  "https://backend-henna-eta.vercel.app/api/v1/";
 export const Axios = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
