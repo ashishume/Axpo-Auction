@@ -4,7 +4,7 @@ const authenticateToken = require("../controllers/authMiddleware");
 const pool = require("../controllers/db-connect");
 
 // Create and save a new product
-router.post("/bid", async (req, res) => {
+router.post("/bid", authenticateToken, async (req, res) => {
   const { userId, productId, amount, enteredAt } = req.body;
   try {
     const checkBidStatus = await pool.query(
@@ -32,7 +32,7 @@ router.post("/bid", async (req, res) => {
   }
 });
 
-router.post("/check-bid-status", async (req, res) => {
+router.post("/check-bid-status", authenticateToken, async (req, res) => {
   const { productId, userId } = req.body;
   try {
     const results = await pool.query(
@@ -50,7 +50,7 @@ router.post("/check-bid-status", async (req, res) => {
   }
 });
 
-router.get("/bids", async (req, res) => {
+router.get("/bids", authenticateToken, async (req, res) => {
   try {
     const results = await pool.query(`SELECT * FROM auctions`);
 
@@ -63,7 +63,7 @@ router.get("/bids", async (req, res) => {
   }
 });
 
-router.get("/bids/:productId", async (req, res) => {
+router.get("/bids/:productId", authenticateToken, async (req, res) => {
   try {
     const { productId } = req.params;
     const results = await pool.query(

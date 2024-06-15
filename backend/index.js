@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const createTables = require("./src/utils/createTables");
-const dotenv = require('dotenv'); 
+const dotenv = require("dotenv");
 require("./src/controllers/db-connect");
 app.use(cookieParser());
 dotenv.config(); // Load environment variables from .env file
@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   "*",
   cors({
-    origin: true,
+    origin: "*",
     credentials: true,
   })
 );

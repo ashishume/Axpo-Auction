@@ -3,7 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const pool = require("../controllers/db-connect");
-
+const authenticateToken = require("../controllers/authMiddleware");
 // Create and save a new user
 router.post("/signup", async (req, res) => {
   try {
@@ -72,7 +72,7 @@ router.post("/login", async (req, res) => {
 });
 
 // Fetch all users API without returning password
-router.get("/users", async (req, res) => {
+router.get("/users", authenticateToken, async (req, res) => {
   try {
     const users = await pool.query(`SELECT id, name, email FROM users`);
     return res.status(200).json(users.rows);
@@ -81,7 +81,6 @@ router.get("/users", async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 
 router.get("/validate", async (req, res) => {
   try {
@@ -96,12 +95,13 @@ router.get("/validate", async (req, res) => {
       res.status(401).json({ isLoggedIn: false });
     }
   } catch (error) {
-    res.status(401).json({ message: "Invalid or expired token", isLoggedIn: false });
+    res
+      .status(401)
+      .json({ message: "Invalid or expired token", isLoggedIn: false });
   }
 });
 
-
-router.post("/logout", async (req, res) => {
+router.post("/logout", authenticateToken, async (req, res) => {
   try {
     res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
     res.status(200).json({ message: "Logged out successfully" });

@@ -4,7 +4,7 @@ const authenticateToken = require("../controllers/authMiddleware");
 const pool = require("../controllers/db-connect");
 
 // Create and save a new product
-router.post("/product", async (req, res) => {
+router.post("/product", authenticateToken, async (req, res) => {
   //TODO: create a common method to make these generic
   const {
     name,
@@ -30,7 +30,7 @@ router.post("/product", async (req, res) => {
   }
 });
 
-router.get("/products", async (req, res) => {
+router.get("/products", authenticateToken, async (req, res) => {
   try {
     const results = await pool.query(
       "SELECT * FROM products ORDER BY created_at DESC"
@@ -54,7 +54,7 @@ router.get("/products", async (req, res) => {
   }
 });
 
-router.get("/product/:id", async (req, res) => {
+router.get("/product/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
     const results = await pool.query("SELECT * FROM products WHERE id=$1", [
