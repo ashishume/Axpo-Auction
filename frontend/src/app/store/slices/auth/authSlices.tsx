@@ -1,72 +1,80 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 // import { logoutUser, validateAuth } from "@/app/services/auth/auth-service";
 
 export interface IAuthState {
   isLoggedIn: boolean | null;
+  user: any;
+  error: null | ErrorEvent;
+  isLoading: boolean;
 }
 
 export const initialState: IAuthState = {
   isLoggedIn: null,
+  user: null,
+  error: null,
+  isLoading: false,
 };
 
 const authSlices = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    loginSuccess: (state, payload) => {
-      state.isLoggedIn = payload.payload?.isLoggedIn;
+    loginStart: (state, _) => {
+      state.isLoggedIn = null;
+      state.isLoading = true;
+      state.error = null;
     },
-    loginFailed: (state) => {
+    loginSuccess: (state, action) => {
+      state.user = action.payload;
+      state.isLoggedIn = true;
+      state.isLoading = false;
+      state.error = null;
+    },
+    loginFailed: (state, action) => {
       state.isLoggedIn = false;
+      state.isLoading = false;
+      state.error = action.payload;
     },
-    signupSuccess: (state, payload) => {
-      state.isLoggedIn = payload.payload?.isLoggedIn;
-    },
-    signupFailed: (state) => {
-      state.isLoggedIn = false;
+    validateStart: (state) => {
+      state.isLoggedIn = null;
+      state.error = null;
     },
     validateSuccess: (state) => {
       state.isLoggedIn = true;
+      state.error = null;
     },
-    validateFailed: (state) => {
+    validateFailed: (state, action) => {
       state.isLoggedIn = false;
+      state.error = action.payload;
+    },
+    logOutStart: (state) => {
+      state.isLoggedIn = true;
+      state.isLoading = true;
+      state.error = null;
     },
     logOutSuccess: (state) => {
       state.isLoggedIn = false;
+      state.isLoading = false;
+      state.error = null;
+    },
+    logOutFailed: (state, action) => {
+      state.isLoggedIn = true;
+      state.isLoading = false;
+      state.error = action.payload;
     },
   },
-  // extraReducers: (builder) => {
-  //   //validate user
-  //   builder.addCase(validateAuth.pending, (state: IAuthState, _) => {
-  //     state.isLoggedIn = false;
-  //   });
-  //   builder.addCase(
-  //     validateAuth.fulfilled,
-  //     (state: IAuthState, action: PayloadAction<{ isLoggedIn: boolean }>) => {
-  //       state.isLoggedIn = action.payload?.isLoggedIn;
-  //     }
-  //   );
-  //   builder.addCase(
-  //     validateAuth.rejected,
-  //     (state: IAuthState, action: PayloadAction<any>) => {
-  //       state.isLoggedIn = false;
-  //     }
-  //   );
-
-  //   //logout reducer
-  //   builder.addCase(
-  //     logoutUser.fulfilled,
-  //     (state: IAuthState, action: PayloadAction<{ isLoggedIn: boolean }>) => {
-  //       state.isLoggedIn = false;
-  //     }
-  //   );
-  //   builder.addCase(logoutUser.rejected, (state: IAuthState, _) => {
-  //     state.isLoggedIn = true; // cancel the logout
-  //   });
-  // },
 });
 
-export const { loginSuccess, validateFailed, validateSuccess, logOutSuccess } =
-  authSlices.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailed,
+  validateStart,
+  validateSuccess,
+  validateFailed,
+  logOutStart,
+  logOutSuccess,
+  logOutFailed,
+} = authSlices.actions;
 
 export default authSlices.reducer;

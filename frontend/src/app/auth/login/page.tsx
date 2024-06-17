@@ -1,28 +1,34 @@
 "use client";
-import { useState } from "react";
-import { loginApiCall } from "@/app/services/auth/auth-service";
+import { useEffect, useState } from "react";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
 import Image from "next/image";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { loginStart } from "@/app/store/slices/auth/authSlices";
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const { isLoading, user } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const local = useLocalStorage("user");
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    const res = await loginApiCall(formData);
-    if (res) {
+    await dispatch(loginStart(formData));
+  };
+
+  useEffect(() => {
+    if (user) {
+      console.log(user);
+
       local.setStoredValue({
-        ...res.user,
+        ...user,
       });
 
       window.location.href = "/";
     }
-  };
+  }, [user]);
 
   function formChangeHandler(event: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target;
@@ -109,11 +115,11 @@ export default function Login() {
             <button
               type="submit"
               className={`group relative flex w-full justify-center rounded-md border border-transparent ${
-                loading ? "bg-gray-400" : "bg-indigo-600"
+                isLoading ? "bg-gray-400" : "bg-indigo-600"
               } py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2`}
-              disabled={loading}
+              disabled={isLoading}
             >
-              {loading ? (
+              {isLoading ? (
                 <svg
                   className="w-5 h-5 text-white animate-spin"
                   xmlns="http://www.w3.org/2000/svg"

@@ -2,12 +2,12 @@
 
 import { useSelector } from "react-redux";
 import ProductCard from "../components/ProductCard/ProductCard";
-import { getProducts } from "../services/auth/products-service";
 import { IProduct } from "../shared/models/Products";
 import { useEffect } from "react";
 import { useAppDispatch } from "../store/hooks";
 import Loader from "../components/Loader";
 import { AppState } from "../store/store";
+import { loadProducts } from "../store/slices/products/productsSlices";
 
 const Dashboard = () => {
   const { isLoading, data } = useSelector((state: AppState) => state?.products);
@@ -15,7 +15,7 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(loadProducts());
   }, []);
 
   return (

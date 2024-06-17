@@ -1,7 +1,3 @@
-import {
-  fetchBidStatus,
-  getProductsDataById,
-} from "@/app/services/auth/products-service";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct } from "@/app/shared/models/Products";
 
@@ -23,53 +19,49 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
+    loadProduct: (state, _) => {
+      state.isLoading = true;
+      state.data = null;
+      state.error = null;
+    },
+    loadProductSuccess: (state, action: PayloadAction<IProduct>) => {
+      state.isLoading = false;
+      state.data = action.payload;
+      state.error = null;
+    },
+    loadProductError: (state, action: PayloadAction<ErrorEvent>) => {
+      state.isLoading = false;
+      state.data = null;
+      state.error = action.payload;
+    },
     clearProductDetails: (state: IProductByIdState) => {
       state.isLoading = false;
       state.data = null;
       state.error = null;
       state.isBidAllowed = null;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(
-      getProductsDataById.pending,
-      (state: IProductByIdState, action: PayloadAction<any>) => {
-        state.isLoading = true;
-        state.data = null;
-        state.error = null;
-      }
-    );
-    builder.addCase(
-      getProductsDataById.fulfilled,
-      (state: IProductByIdState, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.data = action.payload;
-        state.error = null;
-      }
-    );
-    builder.addCase(
-      getProductsDataById.rejected,
-      (state: IProductByIdState, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.data = null;
-        state.error = action.payload;
-      }
-    );
-    // fetch bid status
-    builder.addCase(
-      fetchBidStatus.fulfilled,
-      (
-        state: IProductByIdState,
-        action: PayloadAction<{ isBidAllowed: boolean }>
-      ) => {
-        state.isBidAllowed = action.payload.isBidAllowed;
-      }
-    );
-    builder.addCase(fetchBidStatus.rejected, (state: IProductByIdState, _) => {
+    loadBidAllowed: (state, _) => {
       state.isBidAllowed = false;
-    });
+    },
+    loadBidAllowedSuccess: (
+      state,
+      action: PayloadAction<{ isBidAllowed: boolean }>
+    ) => {
+      state.isBidAllowed = action.payload.isBidAllowed;
+    },
+    loadBidAllowedError: (state, _) => {
+      state.isBidAllowed = false;
+    },
   },
 });
-export const { clearProductDetails } = productSlice.actions;
+export const {
+  loadProduct,
+  loadProductSuccess,
+  loadProductError,
+  clearProductDetails,
+  loadBidAllowed,
+  loadBidAllowedSuccess,
+  loadBidAllowedError,
+} = productSlice.actions;
 
 export default productSlice.reducer;

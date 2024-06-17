@@ -1,11 +1,7 @@
-// sagas.ts
 import { all, fork } from "redux-saga/effects";
-import exampleSaga from "./sagas/exampleSaga";
-// Import your individual sagas here
+import { authSaga } from "./sagas/authSagas";
+import { productsSaga } from "./sagas/productSagas";
 
 export default function* rootSaga() {
-  yield all([
-    fork(exampleSaga),
-    // Add other sagas here
-  ]);
+  yield all([fork(authSaga), fork(productsSaga)]);
 }

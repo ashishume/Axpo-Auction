@@ -1,4 +1,3 @@
-import { getProducts } from "@/app/services/auth/products-service";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IProduct } from "@/app/shared/models/Products";
 
@@ -17,33 +16,32 @@ export const initialState: IProductState = {
 const productsSlice = createSlice({
   name: "products",
   initialState,
-  reducers: {},
-  extraReducers: (builder) => {
-    builder.addCase(
-      getProducts.pending,
-      (state: IProductState, action: PayloadAction<any>) => {
-        state.isLoading = true;
-        state.data = [];
-        state.error = null;
-      }
-    );
-    builder.addCase(
-      getProducts.fulfilled,
-      (state: IProductState, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.data = action.payload;
-        state.error = null;
-      }
-    );
-    builder.addCase(
-      getProducts.rejected,
-      (state: IProductState, action: PayloadAction<any>) => {
-        state.isLoading = false;
-        state.data = [];
-        state.error = action.payload;
-      }
-    );
+  reducers: {
+    loadProducts: (state: IProductState) => {
+      state.isLoading = true;
+      state.data = [];
+      state.error = null;
+    },
+    loadProductsSuccess: (
+      state: IProductState,
+      action: PayloadAction<IProduct[]>
+    ) => {
+      state.isLoading = false;
+      state.data = action.payload;
+      state.error = null;
+    },
+    loadProductsError: (
+      state: IProductState,
+      action: PayloadAction<ErrorEvent>
+    ) => {
+      state.isLoading = false;
+      state.data = [];
+      state.error = action.payload;
+    },
   },
 });
+
+export const { loadProducts, loadProductsSuccess, loadProductsError } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;

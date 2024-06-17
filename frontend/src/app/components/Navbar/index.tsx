@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { logoutUser } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/app/shared/routes/routes";
 import Image from "next/image";
+import { logOutStart } from "@/app/store/slices/auth/authSlices";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +17,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    dispatch(logOutStart());
     router.push(ROUTES.LOGIN);
   };
 
