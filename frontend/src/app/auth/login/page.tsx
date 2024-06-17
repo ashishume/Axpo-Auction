@@ -20,12 +20,9 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      console.log(user);
-
       local.setStoredValue({
-        ...user,
+        ...user?.user,
       });
-
       window.location.href = "/";
     }
   }, [user]);

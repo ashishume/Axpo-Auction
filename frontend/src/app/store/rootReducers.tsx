@@ -2,7 +2,7 @@ import { combineReducers } from "redux";
 import authSlices from "./slices/auth/authSlices";
 import chartSlices from "./slices/chart/chartSlices";
 import productsSlices from "./slices/products/productsSlices";
-import productSlices from "./slices/productSlices/productSlices";
+import productSlices from "./slices/product/productSlices";
 
 const rootReducers = combineReducers({
   products: productsSlices,

@@ -49,17 +49,14 @@ const authSlices = createSlice({
     },
     logOutStart: (state) => {
       state.isLoggedIn = true;
-      state.isLoading = true;
       state.error = null;
     },
     logOutSuccess: (state) => {
       state.isLoggedIn = false;
-      state.isLoading = false;
       state.error = null;
     },
     logOutFailed: (state, action) => {
       state.isLoggedIn = true;
-      state.isLoading = false;
       state.error = action.payload;
     },
   },

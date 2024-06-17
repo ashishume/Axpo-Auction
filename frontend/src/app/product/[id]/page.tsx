@@ -1,10 +1,5 @@
 "use client";
-import {
-  fetchBidStatus,
-  fetchChartData,
-  getProductsDataById,
-  updateBidAmount,
-} from "../../services/auth/products-service";
+
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
@@ -13,8 +8,16 @@ import Loader from "@/app/components/Loader";
 import BarChartComp from "@/app/components/BarChart";
 import { Block } from "@mui/icons-material";
 import useLocalStorage from "@/app/hooks/useLocalStorage";
-import { clearProductDetails } from "@/app/store/slices/productSlices/productSlices";
-import { IChartDataState } from "@/app/store/slices/chart/chartSlices";
+import {
+  IChartDataState,
+  loadChartData,
+} from "@/app/store/slices/chart/chartSlices";
+import { updateBidAmount } from "@/app/store/sagas/productSagas";
+import {
+  clearProductDetails,
+  loadBidAllowed,
+  loadProduct,
+} from "@/app/store/slices/product/productSlices";
 
 const ProductPage = () => {
   const dispatch = useAppDispatch();
@@ -28,15 +31,14 @@ const ProductPage = () => {
   const { id } = useParams();
   const local = useLocalStorage("user");
   useEffect(() => {
-    dispatch(getProductsDataById(id as string));
+    dispatch(loadProduct(id as string));
     dispatch(
-      fetchBidStatus({
+      loadBidAllowed({
         productId: Number(id),
         userId: (local.value as any)?.id,
       })
     );
-
-    dispatch(fetchChartData(Number(id)));
+    dispatch(loadChartData(Number(id)));
 
     return () => {
       dispatch(clearProductDetails());
@@ -64,7 +66,7 @@ const ProductPage = () => {
         userId: id,
       });
 
-      await dispatch(fetchChartData(Number(id)));
+      dispatch(loadChartData(Number(id)));
     }
   };
 

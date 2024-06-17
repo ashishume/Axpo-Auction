@@ -14,7 +14,7 @@ import {
   loadProduct,
   loadProductError,
   loadProductSuccess,
-} from "../slices/productSlices/productSlices";
+} from "../slices/product/productSlices";
 import { PayloadAction } from "@reduxjs/toolkit";
 
 export function* getProducts(): Generator<any, any, AxiosResponse<any>> {
@@ -30,7 +30,7 @@ export function* getProductsDataById(
   action: PayloadAction<{ productId: number }>
 ): Generator<any, any, AxiosResponse<any>> {
   try {
-    const res = yield call(Axios.get, `product/${action?.payload?.productId}`);
+    const res = yield call(Axios.get, `product/${action?.payload}`);
     yield put(loadProductSuccess(res?.data?.data));
   } catch (e: any) {
     yield put(loadProductError(e?.message));
@@ -38,13 +38,13 @@ export function* getProductsDataById(
 }
 
 export function* fetchBidStatus(
-  payload: PayloadAction<{
+  action: PayloadAction<{
     productId: number;
     userId: number;
   }>
 ): Generator<any, any, AxiosResponse<any>> {
   try {
-    const res = yield call(Axios.post, "check-bid-status", payload);
+    const res = yield call(Axios.post, "check-bid-status", action?.payload);
     yield put(loadBidAllowedSuccess(res?.data));
   } catch (e: any) {
     yield put(loadBidAllowedError(e?.message));
