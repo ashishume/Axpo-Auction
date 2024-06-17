@@ -15,14 +15,13 @@ dotenv.config(); // Load environment variables from .env file
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests from all origins
-    callback(null, true);
-  },
-  credentials: true,
-}));
-
+app.use(
+  "*",
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Axpo auction");

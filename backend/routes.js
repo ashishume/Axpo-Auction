@@ -7,6 +7,6 @@ const bidProducts = require("./src/routes/BidProducts");
 const allowCors = require("./src/utils/allowCors");
 
 [userRoutes, productRoutes, bidProducts].forEach((apiRoutes) =>
-  app.use("/api/v1", allowCors(apiRoutes))
+  app.use("/api/v1", apiRoutes)
 );
 module.exports = app;
