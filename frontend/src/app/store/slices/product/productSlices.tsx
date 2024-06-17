@@ -41,7 +41,7 @@ const productSlice = createSlice({
       state.isBidAllowed = null;
     },
     loadBidAllowed: (state, _) => {
-      state.isBidAllowed = false;
+      state.isBidAllowed = null;
     },
     loadBidAllowedSuccess: (
       state,
