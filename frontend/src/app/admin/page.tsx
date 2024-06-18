@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { submitNewProduct } from "../services/auth/products-service";
 import { IProductPayload } from "../shared/models/Products";
 import { useRouter } from "next/navigation";
+import { submitNewProduct } from "../store/sagas/productSagas";
 
 const BiddingForm = () => {
   const {
