@@ -61,7 +61,6 @@ router.get("/product/:id", authenticateToken, async (req, res) => {
       id,
     ]);
     if (results.rowCount) {
-      console.log(results.rows[0]);
       const row = results.rows[0];
       const newResult = {
         ...row,
