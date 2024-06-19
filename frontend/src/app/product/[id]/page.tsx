@@ -181,7 +181,7 @@ const ProductPage = () => {
         <div className="my-5">
           <h1 className="text-2xl text-center">
             <button
-              disabled={isBidAllowed as boolean}  //disable ui yet to be added
+              disabled={!isBidAllowed as boolean}  //disable ui yet to be added
               className="border border-teal-500 text-teal-500
               hover:bg-teal-500 hover:text-white
               py-2 px-4 rounded-full transition duration-300 ease-in-out "
