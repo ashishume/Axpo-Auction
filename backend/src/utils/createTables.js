@@ -26,6 +26,18 @@ const createTables = async () => {
     `);
 
     await client.query(`
+      CREATE TABLE IF NOT EXISTS seats (
+        id SERIAL PRIMARY KEY,
+        product_id INT NOT NULL,
+        user_id INT NOT NULL,
+        seat_number TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+    `);
+
+    await client.query(`
       CREATE TABLE IF NOT EXISTS auctions (
         id SERIAL PRIMARY KEY,
         user_id INT NOT NULL,
