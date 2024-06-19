@@ -43,6 +43,7 @@ export default function Navbar() {
                   Home
                 </div>
               </Link>
+             
               {/* <Link href="/auctions" passHref>
                 <div className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition duration-300 hover:text-gray-900 hover:bg-gray-100">
                   Auctions

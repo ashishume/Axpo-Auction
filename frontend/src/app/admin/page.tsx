@@ -25,7 +25,6 @@ const BiddingForm = () => {
       ...(data as IProductPayload),
       createdAt: new Date().toISOString().toString(),
     };
-
     const res = await submitNewProduct(payload);
     if (res) {
       router.push("/");
@@ -119,6 +118,27 @@ const BiddingForm = () => {
             }`}
           />
           {renderError(errors.productImage)}
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="isExclusive"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Is Exclusive
+          </label>
+          <select
+            {...register("isExclusive", {
+              required: "Exclusive is required",
+            })}
+            id="isExclusive"
+            defaultValue="false"
+            className={`mt-1 p-2 block w-full shadow-sm sm:text-sm border rounded-md border-gray-300`}
+          >
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+          {renderError(errors.isExclusive)}
         </div>
 
         <div className="mb-4">

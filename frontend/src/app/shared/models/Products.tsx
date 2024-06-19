@@ -23,6 +23,7 @@ export interface IProductPayload {
   name: string;
   description: string;
   minBidPrice: number;
+  isExclusive: boolean;
   productImage: string;
   lastDateBid: string;
   createdAt: string;

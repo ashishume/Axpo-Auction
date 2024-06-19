@@ -31,11 +31,17 @@ const createTables = async () => {
         product_id INT NOT NULL,
         user_id INT NOT NULL,
         seat_number TEXT NOT NULL,
+        is_exclusive BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       );
     `);
+
+    //NOTE: kept it for reference
+    // await client.query(`
+    //   ALTER TABLE products ADD COLUMN IF NOT EXISTS is_exclusive BOOLEAN DEFAULT FALSE;
+    // `);
 
     await client.query(`
       CREATE TABLE IF NOT EXISTS auctions (
