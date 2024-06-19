@@ -47,7 +47,10 @@ router.post("/login", async (req, res) => {
 
     if (user.rowCount === 1) {
       const userResult = user.rows[0];
-      const isPasswordValid = await bcrypt.compare(password, userResult.password);
+      const isPasswordValid = await bcrypt.compare(
+        password,
+        userResult.password
+      );
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
@@ -64,9 +67,11 @@ router.post("/login", async (req, res) => {
         sameSite: "none",
         secure: true,
       });
+
+      const { name, email, id } = userResult;
       return res
         .status(200)
-        .json({ message: "Login successful", user: userResult });
+        .json({ message: "Login successful", user: { name, email, id } });
     } else {
       // User not found or invalid credentials
       return res.status(401).json({ message: "Invalid email or password" });

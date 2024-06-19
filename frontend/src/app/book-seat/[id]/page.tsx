@@ -1,55 +1,102 @@
 "use client";
 import { Fragment, useEffect, useState } from "react";
 import "./style.scss";
+import useLocalStorage from "@/app/hooks/useLocalStorage";
+import { useParams } from "next/navigation";
+import { submitSeatsDetails } from "@/app/store/sagas/seatAuctions";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { clearSeats, loadSeats } from "@/app/store/slices/seats/seatsSlices";
+import { createSeats } from "@/app/shared/utils/seats";
+import Loader from "@/app/components/Loader";
+import Snackbar from "@/app/components/Snackbar";
 
 const BookSeat = () => {
   const [seats, setSeats] = useState<string[][]>([]);
+  const [bookedSeats, setBookedSeats] = useState<string[]>([]);
+  const { id } = useParams();
+  const dispatch = useAppDispatch();
+  const { data, isLoading, error } = useAppSelector((state) => state.seats);
 
   useEffect(() => {
-    let rows = [];
-    for (let i = 65; i <= 68; i++) {
-      let cols = [];
-      for (let j = 1; j <= 20; j++) {
-        cols.push(`${String.fromCharCode(i)}${j}`);
-      }
-      rows.push(cols);
-    }
-    setSeats(rows);
-  }, []);
+    setSeats(createSeats());
+    dispatch(loadSeats(Number(id)));
 
-  const selectSeat = (col: string) => {
-    console.log(col);
+    return () => {
+      dispatch(clearSeats());
+    };
+  }, [id]);
+
+  useEffect(() => {
+    let booked: string[] = [];
+    for (let i = 0; i < 4; i++) {
+      data?.map((seat) => {
+        if (
+          !booked.includes(seat.seat_number) &&
+          seats[i].includes(seat.seat_number)
+        ) {
+          booked.push(seat.seat_number);
+        }
+      });
+    }
+    setBookedSeats(booked);
+  }, [data]);
+
+  const { value } = useLocalStorage("user");
+  const selectSeat = async (seatNumber: string) => {
+    const payload = {
+      productId: Number(id),
+      seatNumber,
+      userId: (value as any).id,
+    };
+    const res = await submitSeatsDetails(payload);
+
+    if (res) {
+      dispatch(loadSeats(Number(id)));
+    }
   };
+
   return (
     <div className="container my-5 grid place-items-center">
       <div className="text-xl font-bold uppercase">
         Boook your seats for auction
       </div>
-      {seats.map((row, i) => {
-        return (
-          <div key={i} className="m-1 flex flex-nowrap">
-            {row.map((col, j) => {
-              return (
-                <Fragment key={col}>
-                  <div
-                    className={`inline-block border border-slate-400	 
-                      p-1 m-1 h-10 min-w-10 w-10 hover:bg-slate-400 cursor-pointer
-                      rounded ${j === 10 ? "ml-10" : ""} 
-                      `}
-                  >
+      {isLoading ? (
+        <Loader />
+      ) : (
+        seats.map((row, i) => {
+          return (
+            <div key={i} className="m-1 flex flex-nowrap">
+              {row.map((col, j) => {
+                return (
+                  <Fragment key={col}>
                     <div
-                      className="text-center text-slate-600"
-                      onClick={() => selectSeat(col)}
+                      className={`inline-block border border-slate-400	 
+                      p-1 m-1 h-10 min-w-10 w-10 hover:bg-slate-400 cursor-pointer
+                      rounded ${j === 10 ? "ml-10" : ""}  ${
+                        bookedSeats.includes(col)
+                          ? "bg-slate-700 pointer-events-none cursor-not-allowed"
+                          : null
+                      } 
+                      `}
                     >
-                      {col}
+                      <div
+                        className={`text-center text-slate-600 ${
+                          bookedSeats.includes(col) ? "text-white" : null
+                        }`}
+                        onClick={() => selectSeat(col)}
+                      >
+                        {col}
+                      </div>
                     </div>
-                  </div>
-                </Fragment>
-              );
-            })}
-          </div>
-        );
-      })}
+                  </Fragment>
+                );
+              })}
+
+              {error ? <Snackbar message={error} /> : null}
+            </div>
+          );
+        })
+      )}
 
       <div className="w-2/4 rounded  py-5 bg-slate-300">
         <h1 className="text-center">Auction table</h1>

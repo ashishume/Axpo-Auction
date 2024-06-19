@@ -3,7 +3,7 @@ const router = express.Router();
 const authenticateToken = require("../controllers/authMiddleware");
 const pool = require("../controllers/db-connect");
 
-router.post("/book-seat", async (req, res) => {
+router.post("/book-seat", authenticateToken, async (req, res) => {
   const { productId, userId, seatNumber, createdAt } = req.body;
   try {
     const results = await pool.query(
@@ -21,7 +21,7 @@ router.post("/book-seat", async (req, res) => {
   }
 });
 
-router.get("/seats/:productId", async (req, res) => {
+router.get("/seats/:productId", authenticateToken, async (req, res) => {
   try {
     const { productId } = req.params;
     const results = await pool.query(
