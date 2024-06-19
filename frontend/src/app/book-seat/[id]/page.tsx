@@ -18,7 +18,7 @@ const BookSeat = () => {
   }, []);
 
   const selectSeat = (col: string) => {
-    // console.log(col);
+    console.log(col);
   };
   return (
     <div className="container my-5 grid place-items-center">

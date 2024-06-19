@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export interface IAuthState {
   isLoggedIn: boolean | null;
   user: any;
-  error: null | ErrorEvent;
+  error: null | string;
   isLoading: boolean;
 }
 

@@ -1,4 +1,3 @@
-// import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 import { call, put, takeLatest } from "redux-saga/effects";
 import {
@@ -22,8 +21,8 @@ export function* loginApiCall(
     const result = yield call(Axios.post, "/login", action.payload);
     yield put(loginSuccess(result?.data));
   } catch (e: any) {
-    console.error(e?.message);
-    return put(loginFailed(e?.message));
+    console.log(e?.response?.data?.message);
+    yield put(loginFailed(e?.response?.data?.message));
   }
 }
 
@@ -32,18 +31,18 @@ export function* validateAuth(): Generator<any, any, AxiosResponse<any>> {
     const result = yield call(Axios.get, "/validate");
     yield put(validateSuccess(result?.data));
   } catch (e: any) {
-    console.error(e);
-    yield put(validateFailed(e?.message));
+    console.error(e?.response?.data?.message);
+    yield put(validateFailed(e?.response?.data?.message));
   }
 }
 
 export function* logoutUser(): Generator<any, any, AxiosResponse<any>> {
   try {
     const result = yield call(Axios.post, "/logout");
-    return put(logOutSuccess(result?.data));
+    yield put(logOutSuccess(result?.data));
   } catch (e: any) {
-    console.error(e.message);
-    yield put(logOutFailed(e?.message));
+    console.error(e?.response?.data?.message);
+    yield put(logOutFailed(e?.response?.data?.message));
   }
 }
 
@@ -62,6 +61,6 @@ export const signupApiCall = async (credentials: {
     const result = await Axios.post("/signup", credentials);
     return result;
   } catch (e: any) {
-    console.error(e.message);
+    console.error(e?.response?.data?.message);
   }
 };

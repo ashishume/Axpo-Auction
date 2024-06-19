@@ -4,13 +4,14 @@ import useLocalStorage from "@/app/hooks/useLocalStorage";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { loginStart } from "@/app/store/slices/auth/authSlices";
+import Snackbar from "@/app/components/Snackbar";
 
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  const { isLoading, user } = useAppSelector((state) => state.auth);
+  const { isLoading, user, error } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const local = useLocalStorage("user");
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,10 +101,10 @@ export default function Login() {
 
             <div className="text-sm">
               <a
-                href="#"
+                href="/auth/signup"
                 className="font-medium text-indigo-600 hover:text-indigo-500"
               >
-                Forgot your password?
+                Not signed in?
               </a>
             </div>
           </div>
@@ -143,6 +144,7 @@ export default function Login() {
             </button>
           </div>
         </form>
+        {error ? <Snackbar message={error} isError={true} /> : null}
       </div>
     </div>
   );

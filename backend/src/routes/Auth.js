@@ -15,11 +15,14 @@ router.post("/signup", async (req, res) => {
       [email]
     );
     if (isAlreadySignedUp?.rowCount === 0) {
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
       const results = await pool.query(
         `INSERT INTO users (name, email, password)
         VALUES ($1, $2, $3)
         RETURNING *`,
-        [name, email, password]
+        [name, email, hashedPassword]
       );
       return res.status(201).json({
         id: results.rows[0].id,
@@ -38,16 +41,19 @@ router.post("/signup", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await pool.query(
-      `SELECT * FROM users WHERE email = $1 AND password = $2`,
-      [email, password]
-    );
+    const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+      email,
+    ]);
 
     if (user.rowCount === 1) {
-      // User authenticated successfully
+      const userResult = user.rows[0];
+      const isPasswordValid = await bcrypt.compare(password, userResult.password);
+      if (!isPasswordValid) {
+        return res.status(401).json({ message: "Invalid email or password" });
+      }
 
       const token = jwt.sign(
-        { userId: user.rows[0].id },
+        { userId: userResult.id },
         process.env.SECRET_KEY,
         {
           expiresIn: "3h",
@@ -60,7 +66,7 @@ router.post("/login", async (req, res) => {
       });
       return res
         .status(200)
-        .json({ message: "Login successful", user: user.rows[0] });
+        .json({ message: "Login successful", user: userResult });
     } else {
       // User not found or invalid credentials
       return res.status(401).json({ message: "Invalid email or password" });

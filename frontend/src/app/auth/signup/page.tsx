@@ -1,20 +1,19 @@
 "use client";
 import { useState } from "react";
 import Head from "next/head";
-import { signupApiCall } from "@/app/services/auth/auth-service";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { signupApiCall } from "@/app/store/sagas/authSagas";
 
 export default function Signup() {
   const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
+  const [errorMsg, setError] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -119,12 +118,21 @@ export default function Signup() {
                   className="relative block w-full px-3 py-2 border border-gray-300 rounded-b-md appearance-none focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                   placeholder="Confirm Password"
                 />
-                {error && (
+                {errorMsg && (
                   <div className="animate-fadeIn delay-800 text-red-500 text-sm">
-                    {error}
+                    {errorMsg}
                   </div>
                 )}
               </div>
+            </div>
+
+            <div className="text-sm">
+              <a
+                href="/auth/login"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Already signed in?
+              </a>
             </div>
 
             <div className="animate-fadeIn delay-800">
