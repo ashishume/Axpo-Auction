@@ -2,7 +2,7 @@
 
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { AppState } from "@/app/store/store";
 import Loader from "@/app/components/Loader";
 import BarChartComp from "@/app/components/BarChart";
@@ -23,6 +23,8 @@ const ProductPage = () => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState("");
   const [bidAmount, setBidAmount] = useState(0);
+  const router = useRouter();
+
   const { isLoading, data, isBidAllowed } = useAppSelector(
     (state: AppState) => state.product
   );
@@ -178,15 +180,15 @@ const ProductPage = () => {
 
         <div className="my-5">
           <h1 className="text-2xl text-center">
-            <a
+            <button
+              disabled={isBidAllowed as boolean}  //disable ui yet to be added
               className="border border-teal-500 text-teal-500
-               hover:bg-teal-500 hover:text-white
-               py-2 px-4 rounded-full transition duration-300
-                ease-in-out"
-              href={`/book-seat/${id}`}
+              hover:bg-teal-500 hover:text-white
+              py-2 px-4 rounded-full transition duration-300 ease-in-out "
+              onClick={() => router.push(`/book-seat/${id}`)}
             >
               Book seats for live auction
-            </a>
+            </button>
           </h1>
         </div>
       </main>
