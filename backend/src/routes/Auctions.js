@@ -7,10 +7,10 @@ router.post("/book-seat", authenticateToken, async (req, res) => {
   const { productId, userId, seatNumber, createdAt } = req.body;
   try {
     const results = await pool.query(
-      `INSERT INTO seats (product_id, user_id, seat_number, created_at)
-      VALUES ($1, $2, $3, $4)
+      `INSERT INTO seats (product_id, user_id, seat_number)
+      VALUES ($1, $2, $3)
       RETURNING *`,
-      [productId, userId, seatNumber, createdAt]
+      [productId, userId, seatNumber]
     );
     res
       .status(201)
